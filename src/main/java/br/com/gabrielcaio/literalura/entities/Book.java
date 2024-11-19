@@ -4,8 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,9 +37,11 @@ public class Book {
     private String title;
 
     @ManyToMany(mappedBy = "books",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("books")
     private Set<Person> persons = new HashSet<>();
 
-    private Set<String> languages;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> languages = new HashSet<>();
     private Long downloadCount;
 
     
@@ -54,8 +59,7 @@ public class Book {
     }
     @Override
     public String toString() {
-        String toString = "";
-        toString += "Título: " + title;
+        String toString = "Título: " + title;
 
         toString += "\nAutor(es):";
         for(Person person : persons){

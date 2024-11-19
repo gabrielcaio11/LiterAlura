@@ -13,16 +13,16 @@ import br.com.gabrielcaio.literalura.entities.Person;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    @Query("SELECT b FROM Book b JOIN FETCH b.persons") 
+    @Query("SELECT b FROM Book b JOIN FETCH b.persons")
     List<Book> findAllBooksWithPersons();
-    
+
     @Query("SELECT b.persons FROM Book b")
     List<Person> findAllPersons();
 
-    @Query("SELECT DISTINCT a FROM Book b JOIN b.persons a WHERE YEAR(a.birthYear) <= :year")
-    List<Person> findByAuthorsBirthYearLessThanEqual(int year);
+    @Query("SELECT DISTINCT a FROM Book b JOIN b.persons a WHERE a.birthYear <= :year")
+    List<Person> findByAuthorsBirthYearLessThanEqual(@Param("year") int year);
 
-    @Query("SELECT b FROM Book b WHERE b.languages LIKE %:idioma%")
+    @Query("SELECT b FROM Book b JOIN b.languages l WHERE l LIKE %:idioma%")
     List<Book> findByIdioma(@Param("idioma") String idioma);
 
 }

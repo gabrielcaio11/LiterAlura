@@ -71,9 +71,11 @@ public class LiterAlura {
         if (books.isEmpty()) {
             System.out.println("Nenhum livro encontrado");
         } else {
-            System.out.println("Livros encontrados: ");
+            System.out.println("\nLivros encontrados: ");
+            System.out.println("\n-----------------------------------\n");
             for (Book book : books) {
                 System.out.println(book.toString());
+                System.out.println("\n-----------------------------------");
             }
         }
     }

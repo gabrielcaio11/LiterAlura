@@ -3,6 +3,8 @@ package br.com.gabrielcaio.literalura.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +35,7 @@ public class Person {
     private Integer birthYear;
     private Integer deathYear;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
@@ -42,6 +44,7 @@ public class Person {
         joinColumns = @JoinColumn(name = "person_id"),  // fk da entidade desse lado
         inverseJoinColumns = @JoinColumn(name = "book_id") // fk da entidade do outro lado
     )
+    @JsonIgnoreProperties("persons")
     private Set<Book> books = new HashSet<>();
 
     public Person(Author author){
@@ -56,9 +59,9 @@ public class Person {
         toString += "\nBirthYear: " + birthYear;
         toString += "\nDeathYear: " + deathYear;
         toString += "\nName: " + name;
-        toString += "Livros [";
+        toString += "\nLivros [\n";
         for (Book book : books) {
-            toString += "\n "+ book;
+            toString +=  book;
         }
         toString += "\n]"; 
         return toString;
